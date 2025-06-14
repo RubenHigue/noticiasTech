@@ -1,16 +1,44 @@
-# This is a sample Python script.
+# recolector_rss.py
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import feedparser
 
+# Lista de fuentes RSS tecnológicas
+feeds = {
+    "BBC": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+    "TechCrunch": "https://techcrunch.com/feed/",
+    "The Verge": "https://www.theverge.com/rss/index.xml",
+    "Wired": "https://www.wired.com/feed/rss",
+    "New York Times": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
+    "Reuters": "https://rss.app/feeds/oeTaZ4HohO2RPhEf.xml",
+    "CNN": "https://rss.app/feeds/1jIzW5ADwWTnkBHC.xml",
+    "El economista":"https://rss.app/feeds/JEvOcsfOfrv4pV3K.xml",
+    "La vanguardia":"https://www.lavanguardia.com/rss/tecnologia.xml"
+}
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+# Número de noticias por fuente
+NOTICIAS_POR_FUENTE = 5
 
+# Función para recolectar noticias
+def recolectar_noticias():
+    noticias = []
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    for nombre, url in feeds.items():
+        feed = feedparser.parse(url)
+        print(f"\n📰 Fuente: {nombre}")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+        for entry in feed.entries[:NOTICIAS_POR_FUENTE]:
+            noticia = {
+                "titulo": entry.title,
+                "enlace": entry.link,
+                "resumen": entry.get("summary", ""),
+                "fuente": nombre
+            }
+            noticias.append(noticia)
+
+            print(f" - {noticia['titulo']}")
+
+    return noticias
+
+# Si lo ejecutas directamente
+if __name__ == "__main__":
+    recolectar_noticias()
