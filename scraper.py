@@ -1,6 +1,8 @@
-
+from scrapers import bbc, adsl_zone  # Importa más según los vayas creando
 
 router = {
+    "BBC": bbc.scrape_bbc,
+    "ADSL zone": adsl_zone.scrape_adslzone
 }
 
 
